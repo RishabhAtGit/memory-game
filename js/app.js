@@ -25,6 +25,7 @@ let shuffledListOfCards = [];
 let oldListOfCards = [];
 const cardsDeck = document.querySelector('.deck');
 let openCards = [];
+let moves = 0;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -85,13 +86,21 @@ function toggleCards(clickedCard) {
   clickedCard.classList.toggle('show');
 }
 //
+function movesCounter(){
+  moves++;
+  const move = document.querySelector('.moves');
+  move.innerHTML = moves;
+}
+//
 cardsDeck.addEventListener('click', function(event) {
   const clickedCard = event.target;
   if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
     toggleCards(clickedCard);
     openCards.push(clickedCard);
-    if (openCards.length === 2)
+    if (openCards.length === 2){
       matchCards();
+      movesCounter();
+    }
   }
 });
 
