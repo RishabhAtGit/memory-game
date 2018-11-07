@@ -23,6 +23,8 @@ const listOfCards = ['fa fa-diamond',
 
 let shuffledListOfCards = [];
 let oldListOfCards = [];
+const cardsDeck = document.querySelector('.deck');
+let openCards = [];
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -30,14 +32,14 @@ let oldListOfCards = [];
  *   - add each card's HTML to the page
  */
 
-// Place cards on the board
+// function to Place cards on board
 function setUpBoard() {
   shuffledListOfCards = shuffle(listOfCards);
   console.log(shuffledListOfCards);
   oldListOfCards = document.querySelectorAll('.card i');
   console.log(oldListOfCards);
   let i = 0;
-  for(card of oldListOfCards){
+  for (card of oldListOfCards) {
     card.className = shuffledListOfCards[i++];
   }
 }
@@ -57,7 +59,44 @@ function shuffle(array) {
 
   return array;
 }
+//function for matching pair of cards
+function matchCards() {
+  console.log(openCards);
+  if (openCards[0].firstElementChild.className === openCards[1].firstElementChild.className) {
+    console.log('matched');
+    openCards[0].classList.toggle('match');
+    openCards[1].classList.toggle('match');
+    toggleCards(openCards[0]);
+    toggleCards(openCards[1]);
+    openCards = [];
+  } else {
+    console.log('unmatched');
+    setTimeout(function(){
+      toggleCards(openCards[0]);
+      toggleCards(openCards[1]);
+      openCards = [];
+    }, 1000);
 
+  }
+}
+// function to toggle cards
+function toggleCards(clickedCard) {
+  clickedCard.classList.toggle('open');
+  clickedCard.classList.toggle('show');
+}
+//
+cardsDeck.addEventListener('click', function(event) {
+  const clickedCard = event.target;
+  if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
+    toggleCards(clickedCard);
+    openCards.push(clickedCard);
+    if (openCards.length === 2)
+      matchCards();
+  }
+});
+
+//setting up the board for the Game
+setUpBoard();
 
 /*
  * set up the event listener for a card. If a card is clicked:
