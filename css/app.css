@@ -142,15 +142,23 @@ h1 {
   border-radius: 10px;
 }
 
-.winning-text {
-  padding-left: 100px;
-}
-
 .modal-statistics {
   display: flex;
   align-items: center;
   flex-direction: column;
   padding-right: 100px;
+  padding-left: 100px;
+}
+
+.modal-stars {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-stars li {
+  display: none;
+  list-style: none;
 }
 
 .game-over-modal-buttons {

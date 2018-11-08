@@ -33,7 +33,10 @@ const move = document.querySelector('.moves');
 const stars = document.querySelectorAll('.stars li');
 const reset = document.querySelector('.restart');
 let matchedPairs = 0;
+let starCounter = 0;
 const totalPairs = 8;
+const playAgain = document.querySelector('.play-again');
+const cancel = document.querySelector('.cancel');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -78,18 +81,23 @@ function matchCards() {
     toggleCards(openCards[0]);
     toggleCards(openCards[1]);
     openCards = [];
-    matchedPairs++;
+    ++matchedPairs;
   } else {
     console.log('unmatched');
     setTimeout(function() {
       toggleCards(openCards[0]);
       toggleCards(openCards[1]);
       openCards = [];
-    }, 1000);
+    }, 500);
 
   }
-  if(matchedPairs === totalPairs){
-    
+  if (matchedPairs === totalPairs) {
+    stopTimer();
+    setTimeout(function() {
+      setStatisticsOnModal();
+      toggleCongratulationsModal();
+      matchedPairs = 0;
+    }, 500);
   }
 }
 // function to toggle cards
@@ -99,18 +107,21 @@ function toggleCards(clickedCard) {
 }
 //
 function movesCounter() {
-  moves++;
+  ++moves;
   move.innerHTML = moves;
 }
 //function to provide star rating
 function calculateStarRating() {
   let count = 0;
-  if (moves <= 8)
+  if (moves <= 8) {
     count = 0;
-  else if (moves > 8 && moves <= 16)
+    starCounter = 3;
+  } else if (moves > 8 && moves <= 16) {
     count = 1;
-  else {
+    starCounter = 2;
+  } else {
     count = 2;
+    starCounter = 1;
   }
   displayStar(count);
 }
@@ -127,7 +138,7 @@ function displayStar(count) {
 //function to start timer for the Game
 function startTimer() {
   clockId = setInterval(function() {
-    time++;
+    ++time;
     displayTimer();
   }, 1000);
 }
@@ -142,41 +153,79 @@ function displayTimer() {
     timer.innerHTML = `${mins}:${secs}`;
 }
 //function to stop timer
-function stopTimer(){
+function stopTimer() {
   clearInterval(clockId);
 }
 //function to reset timer
-function resetTimer(){
+function resetTimer() {
   stopTimer();
   timerStatus = false;
   time = 0;
   displayTimer();
 }
 //function to reset moves counter
-function resetMovesCounter(){
+function resetMovesCounter() {
   moves = 0;
   move.innerHTML = moves;
 }
 //function to reset star rating
-function resetStarRating(){
-  for(star of stars){
+function resetStarRating() {
+  for (star of stars) {
     star.style.display = 'inline';
   }
 }
 //function to reset cards
-function resetCards(){
+function resetCards() {
   const currentListOfCards = document.querySelectorAll('.card');
-  for(card of currentListOfCards){
+  for (card of currentListOfCards) {
     card.className = 'card';
   }
 }
 //function to reset Game
-function resetGame(){
+function resetGame() {
   resetTimer();
   resetMovesCounter();
   resetStarRating();
   resetCards();
+  starCounter = 0;
+  resetModalStars();
   setUpBoard();
+}
+//function to write statistics on Congratulations modal
+function setStatisticsOnModal() {
+  const modalTimeStat = document.querySelector('.modal-time');
+  const time = document.querySelector('.timer').innerHTML;
+
+  const modalMovesStat = document.querySelector('.modal-moves');
+  const moves = document.querySelector('.moves').innerHTML;
+
+  const modalStarsStat = document.querySelectorAll('.modal-stars li');
+
+  modalTimeStat.innerHTML = `Time: ${time}`;
+  modalMovesStat.innerHTML = `Moves: ${moves}`;
+
+  let i = 0;
+  while (starCounter > 0) {
+    modalStarsStat[i++].style.display = 'inline';
+    starCounter--;
+  }
+}
+//function to reset stars on congratulations Modal
+function resetModalStars() {
+  const modalStars = document.querySelectorAll('.modal-stars li');
+  for (star of modalStars) {
+    star.style.display = 'none';
+  }
+}
+//function to display Congratulations Modal
+function toggleCongratulationsModal() {
+  const congratulationsModal = document.querySelector('.game-over-modal');
+  congratulationsModal.classList.toggle('hide');
+}
+//function to start game Again
+function startGameAgain() {
+  resetGame();
+  toggleCongratulationsModal();
 }
 //
 cardsDeck.addEventListener('click', function(event) {
@@ -196,7 +245,11 @@ cardsDeck.addEventListener('click', function(event) {
   }
 });
 //
-reset.addEventListener('click',resetGame);
+reset.addEventListener('click', resetGame);
+//
+playAgain.addEventListener('click', startGameAgain);
+//
+cancel.addEventListener('click', toggleCongratulationsModal);
 //setting up the board for the Game
 setUpBoard();
 
