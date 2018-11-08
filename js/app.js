@@ -26,6 +26,9 @@ let oldListOfCards = [];
 const cardsDeck = document.querySelector('.deck');
 let openCards = [];
 let moves = 0;
+let time = 0;
+let timerStatus = false;
+let clockId = 0;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -113,9 +116,30 @@ function displayStar(count){
     }
   }
 }
+//function to start timer for the Game
+function startTimer(){
+  clockId = setInterval(function(){
+    time++;
+    displayTimer();
+  },1000);
+}
+//function to display timer
+function displayTimer(){
+  const timer = document.querySelector('.timer');
+  const mins = Math.floor(time/60);
+  const secs = time % 60;
+  if(secs < 10)
+    timer.innerHTML = `${mins}:0${secs}`;
+  else
+    timer.innerHTML = `${mins}:${secs}`;
+}
 //
 cardsDeck.addEventListener('click', function(event) {
   const clickedCard = event.target;
+  if(!timerStatus){
+    startTimer();
+    timerStatus = true;
+  }
   if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
     toggleCards(clickedCard);
     openCards.push(clickedCard);
