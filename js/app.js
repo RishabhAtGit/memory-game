@@ -29,6 +29,9 @@ let moves = 0;
 let time = 0;
 let timerStatus = false;
 let clockId = 0;
+const move = document.querySelector('.moves');
+const stars = document.querySelectorAll('.stars li');
+const reset = document.querySelector('.restart');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -75,7 +78,7 @@ function matchCards() {
     openCards = [];
   } else {
     console.log('unmatched');
-    setTimeout(function(){
+    setTimeout(function() {
       toggleCards(openCards[0]);
       toggleCards(openCards[1]);
       openCards = [];
@@ -89,17 +92,16 @@ function toggleCards(clickedCard) {
   clickedCard.classList.toggle('show');
 }
 //
-function movesCounter(){
+function movesCounter() {
   moves++;
-  const move = document.querySelector('.moves');
   move.innerHTML = moves;
 }
 //function to provide star rating
-function calculateStarRating(){
+function calculateStarRating() {
   let count = 0;
-  if(moves <= 8)
+  if (moves <= 8)
     count = 0;
-  else if(moves > 8 && moves <= 16)
+  else if (moves > 8 && moves <= 16)
     count = 1;
   else {
     count = 2;
@@ -107,50 +109,88 @@ function calculateStarRating(){
   displayStar(count);
 }
 //function to display stars on the page
-function displayStar(count){
-  const stars = document.querySelectorAll('.stars li');
-  for(star of stars){
-    if(count > 0){
+function displayStar(count) {
+
+  for (star of stars) {
+    if (count > 0) {
       star.style.display = 'none';
       count--;
     }
   }
 }
 //function to start timer for the Game
-function startTimer(){
-  clockId = setInterval(function(){
+function startTimer() {
+  clockId = setInterval(function() {
     time++;
     displayTimer();
-  },1000);
+  }, 1000);
 }
 //function to display timer
-function displayTimer(){
+function displayTimer() {
   const timer = document.querySelector('.timer');
-  const mins = Math.floor(time/60);
+  const mins = Math.floor(time / 60);
   const secs = time % 60;
-  if(secs < 10)
+  if (secs < 10)
     timer.innerHTML = `${mins}:0${secs}`;
   else
     timer.innerHTML = `${mins}:${secs}`;
 }
+//function to stop timer
+function stopTimer(){
+  clearInterval(clockId);
+}
+//function to reset timer
+function resetTimer(){
+  stopTimer();
+  timerStatus = false;
+  time = 0;
+  displayTimer();
+}
+//function to reset moves counter
+function resetMovesCounter(){
+  moves = 0;
+  move.innerHTML = moves;
+}
+//function to reset star rating
+function resetStarRating(){
+  for(star of stars){
+    star.style.display = 'inline';
+  }
+}
+//function to reset cards
+function resetCards(){
+  const currentListOfCards = document.querySelectorAll('.card');
+  for(card of currentListOfCards){
+    card.className = 'card';
+  }
+}
+//function to reset Game
+function resetGame(){
+  resetTimer();
+  resetMovesCounter();
+  resetStarRating();
+  resetCards();
+  setUpBoard();
+}
 //
 cardsDeck.addEventListener('click', function(event) {
   const clickedCard = event.target;
-  if(!timerStatus){
+  if (!timerStatus) {
     startTimer();
     timerStatus = true;
   }
   if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
     toggleCards(clickedCard);
     openCards.push(clickedCard);
-    if (openCards.length === 2){
+    if (openCards.length === 2) {
       matchCards();
       movesCounter();
       calculateStarRating();
     }
   }
 });
-
+//
+reset.addEventListener('click',resetGame);
 //setting up the board for the Game
 setUpBoard();
 
