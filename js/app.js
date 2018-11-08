@@ -32,6 +32,8 @@ let clockId = 0;
 const move = document.querySelector('.moves');
 const stars = document.querySelectorAll('.stars li');
 const reset = document.querySelector('.restart');
+let matchedPairs = 0;
+const totalPairs = 8;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -76,6 +78,7 @@ function matchCards() {
     toggleCards(openCards[0]);
     toggleCards(openCards[1]);
     openCards = [];
+    matchedPairs++;
   } else {
     console.log('unmatched');
     setTimeout(function() {
@@ -84,6 +87,9 @@ function matchCards() {
       openCards = [];
     }, 1000);
 
+  }
+  if(matchedPairs === totalPairs){
+    
   }
 }
 // function to toggle cards
