@@ -91,6 +91,28 @@ function movesCounter(){
   const move = document.querySelector('.moves');
   move.innerHTML = moves;
 }
+//function to provide star rating
+function calculateStarRating(){
+  let count = 0;
+  if(moves <= 8)
+    count = 0;
+  else if(moves > 8 && moves <= 16)
+    count = 1;
+  else {
+    count = 2;
+  }
+  displayStar(count);
+}
+//function to display stars on the page
+function displayStar(count){
+  const stars = document.querySelectorAll('.stars li');
+  for(star of stars){
+    if(count > 0){
+      star.style.display = 'none';
+      count--;
+    }
+  }
+}
 //
 cardsDeck.addEventListener('click', function(event) {
   const clickedCard = event.target;
@@ -100,6 +122,7 @@ cardsDeck.addEventListener('click', function(event) {
     if (openCards.length === 2){
       matchCards();
       movesCounter();
+      calculateStarRating();
     }
   }
 });
