@@ -187,6 +187,7 @@ function resetCards() {
 }
 //function to reset Game
 function resetGame() {
+  openCards = [];
   resetTimer();
   resetMovesCounter();
   resetStarRating();
