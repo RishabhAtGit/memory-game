@@ -2,6 +2,10 @@
  * Create a list that holds all of your cards
  */
 
+/*
+ * Variables Involved
+ */
+
 // list of cards
 const listOfCards = ['fa fa-diamond',
   'fa fa-paper-plane-o',
@@ -21,20 +25,20 @@ const listOfCards = ['fa fa-diamond',
   'fa fa-bomb'
 ];
 
-let shuffledListOfCards = [];
-let oldListOfCards = [];
+let shuffledListOfCards = []; //list of shuffled cards
+let oldListOfCards = []; //list of cards from the web page
 const cardsDeck = document.querySelector('.deck');
-let openCards = [];
-let moves = 0;
-let time = 0;
-let timerStatus = false;
+let openCards = []; // store the cards which are flipped
+let moves = 0; // count moves
+let time = 0; // record time
+let timerStatus = false; // store timer status
 let clockId = 0;
 const move = document.querySelector('.moves');
 const stars = document.querySelectorAll('.stars li');
 const reset = document.querySelector('.restart');
-let matchedPairs = 0;
-let starCounter = 0;
-const totalPairs = 8;
+let matchedPairs = 0; //record number of matched pairs
+let starCounter = 0; // record number of stars
+const totalPairs = 8; // stores total no .of pairs present on the board
 const playAgain = document.querySelector('.play-again');
 const cancel = document.querySelector('.cancel');
 /*
@@ -42,6 +46,10 @@ const cancel = document.querySelector('.cancel');
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
+ */
+
+/*
+ * Function involved
  */
 
 // function to Place cards on board
@@ -91,6 +99,7 @@ function matchCards() {
     }, 500);
 
   }
+  // finish condition
   if (matchedPairs === totalPairs) {
     stopTimer();
     setTimeout(function() {
@@ -105,7 +114,7 @@ function toggleCards(clickedCard) {
   clickedCard.classList.toggle('open');
   clickedCard.classList.toggle('show');
 }
-//
+// function to count moves
 function movesCounter() {
   ++moves;
   move.innerHTML = moves;
@@ -227,7 +236,12 @@ function startGameAgain() {
   resetGame();
   toggleCongratulationsModal();
 }
-//
+
+/*
+ *  Event Listeners
+ */
+
+//Event listener for card click event
 cardsDeck.addEventListener('click', function(event) {
   const clickedCard = event.target;
   if (!timerStatus) {
@@ -245,12 +259,20 @@ cardsDeck.addEventListener('click', function(event) {
     }
   }
 });
-//
+
+//Event Listener for reset game
 reset.addEventListener('click', resetGame);
-//
+
+//Event Listener for Restart game
 playAgain.addEventListener('click', startGameAgain);
-//
+
+//Event Listener for closing Congratulations Modal
 cancel.addEventListener('click', toggleCongratulationsModal);
+
+/*
+ * Initiate Game
+ */
+
 //setting up the board for the Game
 setUpBoard();
 
