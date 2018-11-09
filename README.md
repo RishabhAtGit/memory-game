@@ -4,7 +4,7 @@ Memory Game Project is the basic matching game developed using JavaScript.
 
 ## Table of Contents
 
-* [Game Instructions](#game instructions)
+* [Game Instructions](#game-instructions)
 * [Contributing](#contributing)
 
 ## Game Instructions
