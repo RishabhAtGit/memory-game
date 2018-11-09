@@ -244,13 +244,12 @@ cardsDeck.addEventListener('click', function(event) {
     startTimer();
     timerStatus = true;
   }
-  movesCounter();
   if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
+    movesCounter();
     toggleCards(clickedCard);
     openCards.push(clickedCard);
     if (openCards.length === 2) {
       matchCards();
-      //movesCounter();
       calculateStarRating();
     }
   }
