@@ -113,10 +113,10 @@ function movesCounter() {
 //function to provide star rating
 function calculateStarRating() {
   let count = 0;
-  if (moves <= 8) {
+  if (moves <= 18) {
     count = 0;
     starCounter = 3;
-  } else if (moves > 8 && moves <= 16) {
+  } else if (moves > 18 && moves <= 36) {
     count = 1;
     starCounter = 2;
   } else {
@@ -234,12 +234,13 @@ cardsDeck.addEventListener('click', function(event) {
     startTimer();
     timerStatus = true;
   }
+  movesCounter();
   if (clickedCard.classList.contains('card') && !clickedCard.classList.contains('match') && !clickedCard.classList.contains('open') && openCards.length < 2) {
     toggleCards(clickedCard);
     openCards.push(clickedCard);
     if (openCards.length === 2) {
       matchCards();
-      movesCounter();
+      //movesCounter();
       calculateStarRating();
     }
   }
