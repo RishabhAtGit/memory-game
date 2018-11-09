@@ -55,9 +55,7 @@ const cancel = document.querySelector('.cancel');
 // function to Place cards on board
 function setUpBoard() {
   shuffledListOfCards = shuffle(listOfCards);
-  console.log(shuffledListOfCards);
   oldListOfCards = document.querySelectorAll('.card i');
-  console.log(oldListOfCards);
   let i = 0;
   for (card of oldListOfCards) {
     card.className = shuffledListOfCards[i++];
@@ -81,9 +79,7 @@ function shuffle(array) {
 }
 //function for matching pair of cards
 function matchCards() {
-  console.log(openCards);
   if (openCards[0].firstElementChild.className === openCards[1].firstElementChild.className) {
-    console.log('matched');
     openCards[0].classList.toggle('match');
     openCards[1].classList.toggle('match');
     toggleCards(openCards[0]);
@@ -91,7 +87,6 @@ function matchCards() {
     openCards = [];
     ++matchedPairs;
   } else {
-    console.log('unmatched');
     setTimeout(function() {
       toggleCards(openCards[0]);
       toggleCards(openCards[1]);
